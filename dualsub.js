@@ -1,16 +1,36 @@
-var parser  = require('subtitles-parser');
-var coll    = require('lodash/collection');
-var array   = require('lodash/array');
-var yandex  = require('yandex-translate');
-var fs        = require('fs');
+/*
+ * Library to
+ * 1. Change each line of the subtitles in the .srt into one liners
+ * 2. Translate each of the subtitles from its orginal language to another
+ * 3. Appends the translated subtitle directly below the original subtitles
+ * 4. Returns the SRT STRING as a response in the callback
+ *
+ * Usage:
+ *
+ * var dualsub = require('dualsub');
+ *
+ * optsObj = {
+ *    srtString: "", // SRT string, try downloading one from opensubtitles.org
+ *    frLang:    "", // See all supported languages here:
+ *    toLang:    "", // tech.yandex.com/translate/doc/dg/concepts/langs-docpage/
+ *    yandexKey: ""  // Yandex Translation API key, get at tech.yandex.com/keys
+ * }
+ *
+ * dualsub(optsObj, function(err, res)){
+ *   console.log(res); // outputs the new SRT STRING, you can save it to file
+ * });
+ *
+ */
 
-var dualsub = function(srtFile, fr_lang, to_lang, yandexKi){
+var parser = require('subtitles-parser');
+var coll   = require('lodash/collection');
+var array  = require('lodash/array');
+var yandex = require('yandex-translate');
 
-  var yandexKey = yandexKi;
+var dualsub = function(opts, callback){
 
-  var srtString = fs.readFileSync(srtFile,'utf8');
-  var parsedSrt = parser.fromSrt(srtString);
-
+  var yandexKey = opts.yandexKey;
+  var parsedSrt = parser.fromSrt(opts.srtString);
   var chunkSize = 250;
 
   var parsedSrtWithNoWhiteSpace = coll.map(parsedSrt, function(n){
@@ -23,21 +43,13 @@ var dualsub = function(srtFile, fr_lang, to_lang, yandexKi){
 
   var translatedCount = 0;
 
-  var saveSrtToNewFile = function() {
-    var mergedSrtString = parser.toSrt(parsedSrtWithNoWhiteSpace);
-    fs.writeFile("combined.srt", mergedSrtString, function(err){
-      if (err) { return console.log(err) }
-      console.log("New subtitles at combined.srt");
-    });
-  }
-
   for (i=0; i < parts; i++) {
     var arrays = array.slice(parsedSrtWithNoWhiteSpace, i*chunkSize, (i+1)*chunkSize);
     var string = coll.map(arrays, function(n){
       return n.text;
     }).join("\n");
 
-    yandex(string, { from: fr_lang, to: to_lang, key: yandexKey }, function(err, res) {
+    yandex(string, { from: opts.frLang, to: opts.toLang, key: opts.yandexKey }, function(err, res) {
       if (res.code === 200) {
         var translatedArray = res.text[0].split("\n");
         for (j=0; j < translatedArray.length; j++) {
@@ -45,7 +57,7 @@ var dualsub = function(srtFile, fr_lang, to_lang, yandexKi){
         }
         translatedCount++;
         if (translatedCount === (parts)) {
-          saveSrtToNewFile();
+          return callback(null, parser.toSrt(parsedSrtWithNoWhiteSpace));
         }
       } else {
         console.log(res);
