@@ -29,38 +29,46 @@ var yandex = require('yandex-translate');
 
 var dualsub = function(opts, callback){
 
-  var yandexKey = opts.yandexKey;
   var parsedSrt = parser.fromSrt(opts.srtString);
-  var chunkSize = 250;
 
-  var parsedSrtWithNoWhiteSpace = coll.map(parsedSrt, function(n){
+  // Transforms each subtitle with multiple lines into one
+  var parsedSrtSingleLines = coll.map(parsedSrt, function(n){
     n.text = n.text.replace("\n", " ");
     return n;
   });
+  var srtLength = parsedSrtSingleLines.length;
 
-  var srtLength = parsedSrtWithNoWhiteSpace.length;
-  var parts = Math.ceil(srtLength/chunkSize);
+  // Smaller chunks because Yandex's request limit on the text to be translated
+  var chunkSize       = 250;
+  var chunks          = Math.ceil(srtLength/chunkSize);
 
+  // Loops through each chunk to send to Yandex for translation
   var translatedCount = 0;
+  for (i=0; i < chunks; i++) {
+    var arrays = array.slice(parsedSrtSingleLines, i*chunkSize, (i+1)*chunkSize);
 
-  for (i=0; i < parts; i++) {
-    var arrays = array.slice(parsedSrtWithNoWhiteSpace, i*chunkSize, (i+1)*chunkSize);
+    // Removes each subtitle lines' timestamp info to save line count
+    // and turns each one into a newline
     var string = coll.map(arrays, function(n){
       return n.text;
     }).join("\n");
 
+    // Sends new subtitle texts in 250 lines to Yandex Translate API
     yandex(string, { from: opts.frLang, to: opts.toLang, key: opts.yandexKey }, function(err, res) {
       if (res.code === 200) {
+        // Appends the translated lines into each original SRT line
         var translatedArray = res.text[0].split("\n");
         for (j=0; j < translatedArray.length; j++) {
-          parsedSrtWithNoWhiteSpace[(this.i*chunkSize)+j].text += "\n" + translatedArray[j];
+          parsedSrtSingleLines[(this.i*chunkSize)+j].text += "\n" + translatedArray[j];
         }
         translatedCount++;
-        if (translatedCount === (parts)) {
-          return callback(null, parser.toSrt(parsedSrtWithNoWhiteSpace));
+
+        // Returns the new SRT after all chunks are tranlated!
+        if (translatedCount === (chunks)) {
+          return callback(null, parser.toSrt(parsedSrtSingleLines));
         }
       } else {
-        console.log(res);
+        return callback(err);
       }
     }.bind({ i: i }));
   }
