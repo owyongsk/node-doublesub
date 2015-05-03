@@ -15,5 +15,8 @@
     "subtitles-parser": "0.0.2",
     "lodash": "3.7.0",
     "yandex-translate": "1.0.1"
+  },
+  "bin": {
+    "doublesub": "bin/doublesub-cli.js"
   }
 }
