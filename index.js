@@ -33,7 +33,7 @@ var dualsub = function(opts, callback){
 
   // Transforms each subtitle with multiple lines into one
   var parsedSrtSingleLines = coll.map(parsedSrt, function(n){
-    n.text = n.text.replace("\n", " ");
+    n.text = n.text.split("\n").join(" ");
     return n;
   });
   var srtLength = parsedSrtSingleLines.length;
