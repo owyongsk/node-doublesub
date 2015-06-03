@@ -1,5 +1,5 @@
 {
-  "name": "doubleSub",
+  "name": "doublesub",
   "version": "0.0.1",
   "description": "A library and command line tool to get two line subtitles with different languages from a single subtitle source, using Yandex Translate",
   "main": "index.js",
