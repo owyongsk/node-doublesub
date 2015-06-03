@@ -19,4 +19,4 @@
 
 ## API Usage
 
-    See [index.js](https://github.com/owyongsk/node-doublesub/blob/master/index.js)
+  See [index.js](https://github.com/owyongsk/node-doublesub/blob/master/index.js)
