@@ -2,14 +2,25 @@
 
 var yandexKey = process.env.YANDEX_KEY;
 
+var program = require('commander');
 var fs      = require('fs');
 var dualsub = require('../index.js');
 
+program
+  .version('0.0.1')
+  .description('CLI to help you append translated subtitles at the bottom of the original subtitles.\n\n  See github.com/owyongsk/node-doublesub')
+  .usage('-f Kung.Fury.WEBRiP.srt -T en -F es')
+  .option('-T, --to-lang <lang>',      'The language to translate to and to be appended at the bottom')
+  .option('-F, --from-lang <lang>',    'The original language of the .srt subtitle file')
+  .option('-f, --file <path>',         'The original file of the .srt subtitle file in utf8')
+  .option('-y, --yandex-key <string>', 'The API key for yandex translate, ignore if YANDEX_KEY is set')
+  .parse(process.argv);
+
 dualsub({
-  srtString: fs.readFileSync(process.argv[2],'utf8'),
-  frLang:    process.argv[3],
-  toLang:    process.argv[4],
-  yandexKey: yandexKey
+  srtString: fs.readFileSync(program.file,'utf8'),
+  frLang:    program.fromLang,
+  toLang:    program.toLang,
+  yandexKey: program.yandexKey || yandexKey
 }, function(error, res){
     if (error) { return console.log(error) }
 

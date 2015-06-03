@@ -12,8 +12,9 @@
   "author": "SoonKhen \"SK\" OwYong <dude@owyong.sk>",
   "license": "Beerware",
   "dependencies": {
-    "subtitles-parser": "0.0.2",
+    "commander": "^2.8.1",
     "lodash": "3.7.0",
+    "subtitles-parser": "0.0.2",
     "yandex-translate": "1.0.1"
   },
   "bin": {
