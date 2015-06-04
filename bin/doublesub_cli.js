@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/node
 
 var yandexKey = process.env.YANDEX_KEY;
 
