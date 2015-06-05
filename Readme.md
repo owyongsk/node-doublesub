@@ -1,5 +1,13 @@
 # doublesub
 
+A CLI tool and node API to help you append translated subtitles at the bottom of the original ones.
+
+Watch your shows with hilarious mistranslated subtitles. At least you can learn languages faster.
+
+## Requirements
+
+  You need a Yandex translate API key [here](http://tech.yandex.com/keys)
+
 ## Installation
 
   If you just want to use the API
