@@ -7,7 +7,7 @@ var fs      = require('fs');
 var dualsub = require('../index.js');
 
 program
-  .version('0.0.3')
+  .version('0.0.4')
   .description('CLI to help you append translated subtitles at the bottom of the original subtitles.\n\n  See github.com/owyongsk/node-doublesub')
   .usage('-f Kung.Fury.WEBRiP.srt -T en -F es')
   .option('-T, --to-lang <lang>',      'The language to translate to and to be appended at the bottom')
