@@ -2,7 +2,13 @@
 
 ## Installation
 
+  If you just want to use the API
+
     $ npm install doublesub
+
+  With also the CLI utility
+
+    $ npm install doublesub --global
 
 ## CLI Usage
 
