@@ -7,7 +7,7 @@
  *
  * Usage:
  *
- * var dualsub = require('dualsub');
+ * var doublesub = require('doublesub');
  *
  * optsObj = {
  *    srtString: "", // SRT string, try downloading one from opensubtitles.org
@@ -16,7 +16,7 @@
  *    yandexKey: ""  // Yandex Translation API key, get at tech.yandex.com/keys
  * }
  *
- * dualsub(optsObj, function(err, res)){
+ * doublesub(optsObj, function(err, res)){
  *   console.log(res); // outputs the new SRT STRING, you can save it to file
  * });
  *
@@ -27,7 +27,7 @@ var coll   = require('lodash/collection');
 var array  = require('lodash/array');
 var yandex = require('yandex-translate');
 
-var dualsub = function(opts, callback){
+var doublesub = function(opts, callback){
 
   var parsedSrt = parser.fromSrt(opts.srtString);
 
@@ -75,4 +75,4 @@ var dualsub = function(opts, callback){
 
 };
 
-module.exports = dualsub;
+module.exports = doublesub;
