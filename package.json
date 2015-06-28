@@ -20,5 +20,9 @@
   },
   "bin": {
     "doublesub": "bin/doublesub_cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owyongsk/node-doublesub"
   }
 }
