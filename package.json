@@ -12,6 +12,7 @@
   "author": "SoonKhen \"SK\" OwYong <dude@owyong.sk>",
   "license": "Beerware",
   "dependencies": {
+    "async": "^1.2.1",
     "commander": "^2.8.1",
     "lodash": "3.7.0",
     "subtitles-parser": "0.0.2",
