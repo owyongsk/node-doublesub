@@ -13,7 +13,7 @@ program
   .option('-T, --to-lang <lang>',      'The language to translate to and to be appended at the bottom')
   .option('-F, --from-lang <lang>',    'The original language of the .srt subtitle file')
   .option('-f, --file <path>',         'The original file of the .srt subtitle file in utf8')
-  .option('-y, --yandex-key <string>', 'The API key for yandex translate, ignore if YANDEX_KEY is set')
+  .option('-y, --yandex-key <string>', 'The API key for yandex translate, ignore if env var YANDEX_KEY is set')
   .parse(process.argv);
 
 dualsub({
@@ -24,8 +24,10 @@ dualsub({
 }, function(error, res){
     if (error) { return console.log(error) }
 
-    fs.writeFile("combined.srt", res, function(err){
+    new_srt = program.file.split(".").slice(0,-2).
+      concat([program.fromLang+"-"+program.toLang,"srt"]).join(".");
+    fs.writeFile(new_srt, res, function(err){
       if (err) { return console.log(err) }
-      console.log("New subtitles at combined.srt");
+      console.log("New subtitles in "+new_srt);
     });
 });
