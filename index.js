@@ -13,7 +13,9 @@
  *    srtString: "", // SRT string, try downloading one from opensubtitles.org
  *    frLang:    "", // See all supported languages here:
  *    toLang:    "", // tech.yandex.com/translate/doc/dg/concepts/langs-docpage/
- *    yandexKey: ""  // Yandex Translation API key, get at tech.yandex.com/keys
+ *    yandexKey: "", // Yandex Translation API key, get at tech.yandex.com/keys
+ *    translate: ""  // if true, it will just machine translate from other
+ *                      language subtitles instead of appending
  * }
  *
  * doublesub(optsObj, function(err, res)){
@@ -77,7 +79,11 @@ var doublesub = function(opts, callback){
 
     coll.eachRight(results, function(n, i) {
       coll.eachRight(n.split("\n"), function(translated_line, j){
-        parsedSrt[(i*chunkSize)+j].text += "\n" + translated_line;
+        if (opts.translate) {
+          parsedSrt[(i*chunkSize)+j].text = translated_line;
+        } else {
+          parsedSrt[(i*chunkSize)+j].text += "\n" + translated_line;
+        }
       });
     });
 

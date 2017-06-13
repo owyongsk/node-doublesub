@@ -14,9 +14,11 @@ program
   .option('-F, --from-lang <lang>',    'The original language of the .srt subtitle file')
   .option('-f, --file <path>',         'The original file of the .srt subtitle file in utf8')
   .option('-y, --yandex-key <string>', 'The API key for yandex translate, ignore if env var YANDEX_KEY is set')
+  .option('-t, --translate',           'If set, only a single line of translated subtitles')
   .parse(process.argv);
 
 dualsub({
+  translate: program.translate,
   srtString: fs.readFileSync(program.file,'utf8'),
   frLang:    program.fromLang,
   toLang:    program.toLang,
