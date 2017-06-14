@@ -7,14 +7,14 @@ var fs      = require('fs');
 var dualsub = require('../index.js');
 
 program
-  .version('0.0.6')
+  .version('0.0.8')
   .description('CLI to help you append translated subtitles at the bottom of the original subtitles.\n\n  See github.com/owyongsk/node-doublesub')
   .usage('-f Kung.Fury.WEBRiP.srt -T en -F es')
   .option('-T, --to-lang <lang>',      'The language to translate to and to be appended at the bottom')
   .option('-F, --from-lang <lang>',    'The original language of the .srt subtitle file')
   .option('-f, --file <path>',         'The original file of the .srt subtitle file in utf8')
   .option('-y, --yandex-key <string>', 'The API key for yandex translate, ignore if env var YANDEX_KEY is set')
-  .option('-t, --translate',           'If set, only a single line of translated subtitles')
+  .option('-t, --translate',           'Translate only mode, if you only want translated subtitles')
   .parse(process.argv);
 
 dualsub({
